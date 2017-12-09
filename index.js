@@ -1,12 +1,11 @@
 const ask = require('./ask');
 const chalk = require('chalk');
+const Game = require('./src/Game');
+const data = require('./data/jigsaw');
 console.log();
 main().then(() => {console.log(); ask.close();});
 
 async function main() {
-
-    console.log('hi');
-    let ans = await ask(chalk.yellow('How did it happen? '));
-    console.log(`Answer ${chalk.red(ans)}`);
-
+    const game = new Game(data);
+    await game.start();
 }
