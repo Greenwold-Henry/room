@@ -9,7 +9,7 @@ module.exports = class Room {
     }
     
     print() {
-        console.log(chalk.green(this.name));
+        console.log(chalk.green('\n' + this.name));
         console.log(this.description);
         if (this.exits) {
             if (this.exits.length === 1) {
