@@ -15,7 +15,7 @@ module.exports = {
         exits: {s: {room: 'Table Room'}}
     },{
         name: 'Troll Room',
-        description: 'You are in a room with a giant troll who makes grunting noises and says hello dad. There is a cord hanging down',
+        description: 'You are in a room with a giant troll who makes grunting noises. There is a cord hanging down',
         exits: {
             w: {room: 'Table Room'},
             u: {room: 'Forest', hidden: true}
