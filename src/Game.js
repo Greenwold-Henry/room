@@ -1,5 +1,6 @@
 const chalk = require('chalk');
 const Room = require('./Room');
+const Character = require('./Character');
 const ask = require('../ask');
 const directions = require('./directions');
 
@@ -14,8 +15,8 @@ module.exports = class Game {
         this.prologue = data.prologue;
         this.name = data.name;
         
-        
         this.room = this.rooms[this.startingRoom];
+        this.self = new Character({}, this.room);
         
         this.validateDirections();
     }
@@ -64,6 +65,21 @@ module.exports = class Game {
             if (input === action.phrase) {
                 action.action(this, this.room);
                 return;
+            }
+        }
+
+        if (input === 'i' || input === 'inventory') {
+            this.self.inventory();
+            return;
+        }
+
+        const words = input.split(' ');
+        if (words[0] === 'take') {
+            for (let thing of room.things) {
+                if (thing.name === words[1]) {
+                    this.self.take(thing);
+                    return;
+                }
             }
         }
 

@@ -4,14 +4,18 @@ module.exports = {
     prologue: 'You wake up.',
     rooms: [{
         name: 'Table Room',
-        description: 'You are in a room that has a table. On that table is a jigsaw piece',
+        description: 'You are in a room that has a table.',
+        things: [{
+            description: 'Jigsaw puzzle piece',
+            name: 'piece'
+        }],
         exits: {
             n: { room: 'Jigsaw Room' },
             e: { room: 'Troll Room' }
         }
     },{
         name: 'Jigsaw Room',
-        description: 'You are in a room with 499 pieces of a puzzle. One is missing',
+        description: 'You are in a room with a jigsaw puzzle box.',
         exits: {s: {room: 'Table Room'}}
     },{
         name: 'Troll Room',

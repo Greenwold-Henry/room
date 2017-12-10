@@ -1,21 +1,27 @@
 const chalk = require('chalk');
 const directions = require('./directions');
+const Thing = require('./Thing');
 
 module.exports = class Room {
-    constructor(data) {
-        this.name = data.name;
-        this.description = data.description;
-        this.exits = data.exits;
+    constructor({name, description, exits = [], things = [], actions = []}) {
+        this.name = name;
+        this.description = description;
+        this.exits = exits;
         for (let exitPair of Object.entries(this.exits)) {
             exitPair[1].dir = exitPair[0];
         }
-        this.things = data.things;
-        this.actions = data.actions;
+        this.actions = actions;
+        this.things = things.map(thing => new Thing({...thing, room: this}));
     }
     
     print() {
         console.log(chalk.green('\n' + this.name));
         console.log(this.description);
+
+        for (let thing of this.things) {
+            console.log(`There is a ${thing.description} here.`);
+        }
+
         if (this.exits) {
             const nonHiddenExits = [];
             for (let exit of Object.values(this.exits)) {
