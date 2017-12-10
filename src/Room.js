@@ -10,6 +10,7 @@ module.exports = class Room {
             exitPair[1].dir = exitPair[0];
         }
         this.things = data.things;
+        this.actions = data.actions;
     }
     
     print() {

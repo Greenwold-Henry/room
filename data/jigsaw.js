@@ -24,6 +24,7 @@ module.exports = {
             {
                 phrase: 'pull cord',
                 action: (game, room) => {
+                    console.log('A trap door in the ceiling opens up.');
                     room.exits['u'].hidden = false;
                 }
             }

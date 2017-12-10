@@ -60,6 +60,13 @@ module.exports = class Game {
                 return;
             }
         }
+        for (let action of room.actions) {
+            if (input === action.phrase) {
+                action.action(this, this.room);
+                return;
+            }
+        }
+
         console.log("You can't go that way.");
     }
     
