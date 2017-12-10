@@ -22,6 +22,8 @@ module.exports = class Game {
         this.validateDirections();
     }
     
+    
+    // jshint ignore:start
     async start() {
         console.log(chalk.yellowBright(this.name));
         console.log(this.prologue);
@@ -35,6 +37,7 @@ module.exports = class Game {
             this.parseInput(input, this.room);
         }    
     }
+    // jshint ignore:end
     
     validateDirections() {
         for (let room of Object.values(this.rooms)) {

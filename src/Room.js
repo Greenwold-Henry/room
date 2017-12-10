@@ -11,7 +11,9 @@ module.exports = class Room {
             exitPair[1].dir = exitPair[0];
         }
         this.actions = actions;
-        this.things = things.map(thing => new Thing({...thing, room: this}));
+        this.things = things.map(thing => new Thing({// jshint ignore:start
+            ...thing, // jshint ignore:end
+            room: this}));
     }
     
     print() {
