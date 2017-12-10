@@ -3,7 +3,7 @@ const Room = require('./Room');
 const Character = require('./Character');
 const ask = require('./util/ask');
 const say = require('./util/say');
-const directions = require('./directions');
+const directions = require('./lang/directions');
 
 module.exports = class Game {
     constructor(data) {

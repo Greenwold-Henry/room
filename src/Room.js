@@ -1,5 +1,5 @@
 const chalk = require('chalk');
-const directions = require('./directions');
+const directions = require('./lang/directions');
 const Thing = require('./Thing');
 
 module.exports = class Room {
