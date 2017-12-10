@@ -1,7 +1,8 @@
 const chalk = require('chalk');
 const Room = require('./Room');
 const Character = require('./Character');
-const ask = require('../ask');
+const ask = require('./util/ask');
+const say = require('./util/say');
 const directions = require('./directions');
 
 module.exports = class Game {
@@ -16,7 +17,7 @@ module.exports = class Game {
         this.name = data.name;
         
         this.room = this.rooms[this.startingRoom];
-        this.self = new Character({}, this.room);
+        this.self = new Character(this.room);
         
         this.validateDirections();
     }
@@ -52,7 +53,7 @@ module.exports = class Game {
         input = input.toLowerCase().trim();
         let exits = Object.values(room.exits);
         if (!exits || exits.length === 0) {
-            console.log('You are trapped!');
+            say('You are trapped!');
             return;
         }
         for (let exit of exits) {
@@ -69,7 +70,7 @@ module.exports = class Game {
         }
 
         if (input === 'i' || input === 'inventory') {
-            this.self.inventory();
+            this.self.reportInventory();
             return;
         }
 
@@ -83,7 +84,7 @@ module.exports = class Game {
             }
         }
 
-        console.log("You can't go that way.");
+        say("You can't go that way.");
     }
     
 };

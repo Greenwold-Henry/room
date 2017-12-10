@@ -1,5 +1,3 @@
-const ask = require('./ask');
-const chalk = require('chalk');
 const Game = require('./src/Game');
 const data = require('./data/jigsaw');
 console.log();

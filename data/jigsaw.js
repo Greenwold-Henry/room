@@ -1,3 +1,5 @@
+const say = require('../src/util/say');
+
 module.exports = {
     name: 'Jigsaw',
     startingRoom: 'Table Room',
@@ -28,8 +30,8 @@ module.exports = {
             {
                 phrase: 'pull cord',
                 action: (game, room) => {
-                    console.log('A trap door in the ceiling opens up.');
-                    room.exits['u'].hidden = false;
+                    say('A trap door in the ceiling opens up.');
+                    room.exits.u.hidden = false;
                 }
             }
         ]
