@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const directions = require('./directions');
 
 module.exports = class Room {
     constructor(data) {
@@ -13,10 +14,10 @@ module.exports = class Room {
         console.log(this.description);
         if (this.exits) {
             if (this.exits.length === 1) {
-                console.log(`There is an exit to the ${this.exits[0][0]}`);
+                console.log(`There is an exit to the ${directions.fullname(this.exits[0][0])}`);
             } else {
                 console.log(`There are exits in the following directions ${
-                            this.exits.map((exit) => exit[0]).join(', ')
+                            this.exits.map((exit) => directions.fullname(exit[0])).join(', ')
                         }`);
             }
         }

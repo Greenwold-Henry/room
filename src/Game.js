@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const Room = require('./Room');
 const ask = require('../ask');
+const directions = require('./directions');
 
 module.exports = class Game {
     constructor(data) {
@@ -38,7 +39,7 @@ module.exports = class Game {
             return;
         }
         for (let exit of room.exits) {
-            if (input === exit[0]) {
+            if (input === exit[0] || input === directions.fullname(exit[0])) {
                 this.room = this.rooms[exit[1]];
                 return;
             }
