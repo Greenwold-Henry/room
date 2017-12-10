@@ -16,6 +16,8 @@ module.exports = class Game {
         
         
         this.room = this.rooms[this.startingRoom];
+        
+        this.validateDirections();
     }
     
     async start() {
@@ -32,15 +34,29 @@ module.exports = class Game {
         }    
     }
     
+    validateDirections() {
+        for (let room of Object.values(this.rooms)) {
+            if (room.exits) {
+                let exits = Object.values(room.exits);
+                for (let exit of exits) {
+                    if (!this.rooms[exit.room]) {
+                       throw(chalk.red(`Error! Room: ${room.name} has an exit to a nonexistent room ${exit.room}`));
+                    }
+                }
+            } 
+        }
+    }
+    
     parseInput(input, room) {
         input = input.toLowerCase().trim();
-        if (!room.exits) {
+        let exits = Object.values(room.exits);
+        if (!exits || exits.length === 0) {
             console.log('You are trapped!');
             return;
         }
-        for (let exit of room.exits) {
-            if (input === exit[0] || input === directions.fullname(exit[0])) {
-                this.room = this.rooms[exit[1]];
+        for (let exit of exits) {
+            if (input === exit.dir || input === directions.fullname(exit.dir)) {
+                this.room = this.rooms[exit.room];
                 return;
             }
         }
