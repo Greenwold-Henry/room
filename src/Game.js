@@ -62,6 +62,7 @@ module.exports = class Game {
         for (let exit of exits) {
             if (input === exit.dir || input === directions.fullname(exit.dir)) {
                 this.room = this.rooms[exit.room];
+                this.self.room = this.room;
                 return;
             }
         }
@@ -85,6 +86,18 @@ module.exports = class Game {
                     return;
                 }
             }
+            say(`You see no ${words[1]} here.`);
+            return;
+        }
+        if (words[0] === 'drop') {
+            for (let thing of Object.values(this.self.inventory)) {
+                if (thing.name === words[1]) {
+                    this.self.drop(thing);
+                    return;
+                }
+            }
+            say(`You have no ${words[1]}.`);
+            return;
         }
 
         say("You can't go that way.");

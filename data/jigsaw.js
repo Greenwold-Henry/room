@@ -10,6 +10,9 @@ module.exports = {
         things: [{
             description: 'Jigsaw puzzle piece',
             name: 'piece'
+        },{
+            description: 'List',
+            name: 'list'
         }],
         exits: {
             n: { room: 'Jigsaw Room' },

@@ -11,6 +11,15 @@ module.exports = class Character {
         this.inventory[thing.name] = thing;
         thing.room.things = thing.room.things.filter(otherThing => otherThing.name !== thing.name);
         thing.room = undefined;
+        say(`You took the ${thing.name}.`);
+    }
+    
+    drop(thing) {
+        thing.owner = undefined;
+        delete this.inventory[thing.name];
+        this.room.things.push(thing);
+        thing.room = this.room;
+        say(`You dropped the ${thing.name}.`);
     }
 
     reportInventory() {
