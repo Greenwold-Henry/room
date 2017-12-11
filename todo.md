@@ -1,6 +1,5 @@
 * Aliases for things
 * Aliases for verbs
-* Drop
 * Use
 * Custom Verbs for things
 * Make parser ignore unnecesary words
@@ -13,3 +12,6 @@
 * Dying
 * Capacity
 * Give a better message than "You can't go that way"
+
+Done
++ Drop
