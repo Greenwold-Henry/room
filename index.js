@@ -1,5 +1,5 @@
 const Game = require('./src/Game');
-const data = require('./data/jigsaw');
+const data = require('./data/magic');
 const ask = require('./src/util/ask');
 
 console.log();

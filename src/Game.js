@@ -72,6 +72,15 @@ module.exports = class Game {
                 return;
             }
         }
+        
+        for (let thing of Object.values(this.self.inventory)) {
+            for (let action of (thing.actions || [])) {
+                if (input === action.phrase) {
+                    action.action(this, this.room);
+                    return;
+                }
+            }
+        }
 
         if (input === 'i' || input === 'inventory') {
             this.self.reportInventory();
@@ -100,7 +109,7 @@ module.exports = class Game {
             return;
         }
 
-        say("You can't go that way.");
+        say("You can't do that.");
     }
     
 };

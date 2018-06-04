@@ -11,9 +11,14 @@ module.exports = class Room {
             exitPair[1].dir = exitPair[0];
         }
         this.actions = actions;
-        this.things = things.map(thing => new Thing({// jshint ignore:start
-            ...thing, // jshint ignore:end
-            room: this}));
+        this.things = [];
+        for(let thing of things) {
+            this.addThing(thing);
+        }
+    }
+
+    addThing(thing) {
+        this.things.push(new Thing({...thing, room: this}));
     }
     
     print() {
