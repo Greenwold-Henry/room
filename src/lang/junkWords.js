@@ -1,3 +1,3 @@
 module.exports = [
-    'a','an','and','the','i','this','in','on'
+    'a','at','an','and','go','the','this','in','into','on','to'
 ];

@@ -9,4 +9,12 @@ module.exports = class Thing {
         this.description = description;
         
     }
+
+    move(room) {
+        if (this.room !== room) {
+            this.room.removeThing(this.name);
+            this.room = room;
+            room.things.push(this);
+        }
+    }
 };

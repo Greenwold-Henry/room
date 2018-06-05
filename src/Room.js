@@ -38,7 +38,7 @@ module.exports = class Room {
         console.log(this.description);
 
         for (let thing of this.things) {
-            console.log(`There is a ${thing.description} here.`);
+            console.log(`There is ${thing.description} here.`);
         }
 
         if (this.exits) {

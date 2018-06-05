@@ -4,6 +4,8 @@ const Character = require('./Character');
 const ask = require('./util/ask');
 const say = require('./util/say');
 const directions = require('./lang/directions');
+const junkWords = require('./lang/junkWords');
+const aliases = require('./lang/aliases');
 
 module.exports = class Game {
     constructor(data) {
@@ -19,6 +21,9 @@ module.exports = class Game {
         this.room = this.rooms[this.startingRoom];
         this.self = new Character(this.room);
         this.onMoveCallbacks = [];
+        this.aliases = {};
+        this.prepareAliases(aliases);
+        this.prepareAliases(data.aliases);
         
         this.validateDirections();
     }
@@ -55,9 +60,41 @@ module.exports = class Game {
             } 
         }
     }
+
+    prepareAliases(data) {
+        if (!data) {
+            return;
+        }
+        for (let root of Object.keys(data)) {
+            let aliases = data[root];
+            if (!Array.isArray(aliases)) {
+                aliases = [aliases];
+            }
+            for (let alias of aliases) {
+                this.aliases[alias] = root;
+            }
+        }
+    }
     
+    removeJunk(input) {
+        const junkObj = {};
+        for (let word of junkWords) {
+            junkObj[word] = true;
+        }
+        return input.split(' ').filter(word => !junkObj[word]).join(' ');
+    }
+
+    resolveAliases(input) {
+        return input.split(' ').map(word => this.aliases[word] || word).join(' ');
+    }
+
+
     parseInput(input, room) {
         input = input.toLowerCase().trim();
+        input = input.replace(/\W+/g, ' ');
+        input = this.removeJunk(input);
+        input = input.replace(/\W+/g, ' '); // In case new spaces are added
+        input = this.resolveAliases(input);
         let exits = Object.values(room.exits);
         if (!exits || exits.length === 0) {
             say('You are trapped!');
@@ -100,6 +137,7 @@ module.exports = class Game {
                 if (thing.name === words[1]) {
                     if (!thing.gettable) {
                         say(`You can't take the ${thing.name}.`);
+                        return;
                     }
                     this.self.take(thing);
                     return;

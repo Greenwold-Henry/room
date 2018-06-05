@@ -1,6 +1,19 @@
 const say = require('../src/util/say');
 
 module.exports = {
+    aliases: {
+        rabbit: 'bunny',
+        lock: 'box',
+        clipping: ['news', 'newspaper', 'paper'],
+        seeds: ['packet', 'soil', 'bed'],
+        hat: 'magicians',
+        read: 'look',
+        move: ['shove', 'push'],
+        can: 'watering',
+        feed: ['give']
+    },
+
+
     name: "Escape from Mr. Mysterio's Magic House",
     startingRoom: 'Small Room',
     prologue: "Welcome to Escape from Mr. Mysterio's Magic House. Have fun on your magical adventure.",
@@ -9,13 +22,13 @@ module.exports = {
         description: 'Wow, this room is tiny. You can barely fit your legs in! There is a three-digit lock box fastened to the floor.',
         actions: [
             {
-                phrase: 'set lock to 241',
+                phrase: 'set lock 241',
                 action: (game, room) => {
                     if (! room.unlocked) {
                         room.unlocked = true;
                         say('The lock opens and reveals a bottle.');
                         room.addThing({
-                            description: 'bottle',
+                            description: 'a bottle',
                             name: 'bottle',
                             actions: [
                                 {
@@ -31,7 +44,7 @@ module.exports = {
             }
         ],
         things: [{
-            description: 'Newspaper clipping',
+            description: 'a newspaper clipping',
             name: 'clipping',
             actions: [
                 {
@@ -57,17 +70,17 @@ module.exports = {
                         room.Pushed = true;
                         say('There is a magicians top hat.');
                         room.addThing({
-                            description: 'magicians top hat',
+                            description: 'a magicians top hat',
                             name: 'hat',
                             actions: [
                                 {
-                                    phrase: 'put dust in hat',
+                                    phrase: 'put dust hat',
                                     action: (game, room) => {
                                         if (game.self.has('bottle')) {
                                             if (room.name === 'Stage Room') {
                                                 say('Poof! A magical bunny rabbit hops out of the hat and refuses to move.');
                                                 room.addThing({
-                                                    description: 'bunny rabbit',
+                                                    description: 'a bunny rabbit',
                                                     name: 'rabbit',
                                                     gettable: false
                                                 });
@@ -96,7 +109,7 @@ module.exports = {
         name: 'Shed',
         description: "This room is full of gardening tools. There is a doorway to the northwest that is blocked by a giant hornet's nest",
         things: [{
-            description: 'packet of carrot seeds',
+            description: 'a packet of carrot seeds',
             name: 'seeds'
         }],
         exits: {
@@ -177,7 +190,7 @@ module.exports = {
                     say('The turbine says "Magic generator."');
                 }
             }, {
-                phrase: 'feed carrot to rabbit',
+                phrase: 'feed carrot rabbit',
                 action: (game, room) => {
                     if (game.self.has('carrot')) {
                         say('The bunny gobbles up the carrot in one bite.');
@@ -185,9 +198,7 @@ module.exports = {
                         const rabbit = room.findThing('rabbit');
                         rabbit.following = true;
                         game.onMove((game, room) => {
-                            rabbit.room.removeThing('rabbit');
-                            rabbit.room = room;
-                            room.things.push(rabbit);
+                            rabbit.move(room);
                         });
                     } else {
                         say("You don't have a carrot.")
