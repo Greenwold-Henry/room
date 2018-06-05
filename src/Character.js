@@ -14,6 +14,15 @@ module.exports = class Character {
         say(`You took the ${thing.name}.`);
     }
     
+    destroyThing(thingName) {
+        if (this.has(thingName)) {
+            const thing = this.inventory[thingName];
+            thing.owner = undefined;
+            delete this.inventory[thingName];
+            thing.room = undefined;
+        }
+    }
+
     drop(thing) {
         thing.owner = undefined;
         delete this.inventory[thing.name];

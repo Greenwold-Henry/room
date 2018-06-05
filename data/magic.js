@@ -6,8 +6,7 @@ module.exports = {
     prologue: "Welcome to Escape from Mr. Mysterio's Magic House. Have fun on your magical adventure.",
     rooms: [{
         name: 'Small Room',
-        description: 'Wow, this room is tiny. You can barely fit your legs in!',
-        //description: 'There is a newspaper clipping on the ground. It says two for one. A 3 digit lock box lies on a table.',
+        description: 'Wow, this room is tiny. You can barely fit your legs in! There is a three-digit lock box fastened to the floor.',
         actions: [
             {
                 phrase: 'set lock to 241',
@@ -65,7 +64,17 @@ module.exports = {
                                     phrase: 'put dust in hat',
                                     action: (game, room) => {
                                         if (game.self.has('bottle')) {
-                                            say('It creates a spark. Nothing else happens.');
+                                            if (room.name === 'Stage Room') {
+                                                say('Poof! A magical bunny rabbit hops out of the hat and refuses to move.');
+                                                room.addThing({
+                                                    description: 'bunny rabbit',
+                                                    name: 'rabbit',
+                                                    gettable: false
+                                                });
+                                                game.self.destroyThing('bottle');
+                                            } else {
+                                                say('It creates a spark. Nothing else happens.');
+                                            }
                                         }
                                         else {
                                             say("You don't have any dust.");
@@ -79,8 +88,169 @@ module.exports = {
             }
         ],
         exits: {
-            //s: {room: 'Shed'},
-            e: {room: 'Small Room'}
+            s: {room: 'Shed'},
+            e: {room: 'Small Room'},
+            se: {room: 'Garden'}
+        }
+    },{
+        name: 'Shed',
+        description: "This room is full of gardening tools. There is a doorway to the northwest that is blocked by a giant hornet's nest",
+        things: [{
+            description: 'packet of carrot seeds',
+            name: 'seeds'
+        }],
+        exits: {
+            nw: {room: 'Hornets Nest'},
+            n: {room: 'Coat Room'},
+            s: {room: 'Faucet Room'}
+        }
+    },{
+        name: 'Garden',
+        description: 'There is a big soil bed.',
+        things: [{
+            description: 'an empty watering can',
+            name: 'can'
+        }],
+        actions: [
+            {
+                phrase: 'plant seeds',
+                action: (game, room) => {
+                    if (game.self.has('seeds')) {
+                        if (!room.planted) {
+                            say('You plant the carrot seeds in rows in the soil bed.');
+                            room.planted = true;
+                            game.self.destroyThing('seeds');
+                        }
+                    } else {
+                        say("You don't have any seeds.");
+                    }
+                }
+            },
+            {
+                phrase: 'water seeds',
+                action: (game, room) => {
+                    if (game.self.has('can')) {
+                        const can = game.self.inventory.can;
+                        if (!can.full) {
+                            say('The can is empty.');
+                            return;
+                        }
+                        if (!room.planted) {
+                            say('There are no seeds planted.');
+                            return;
+                        }
+                        say('You pour out the watering can onto the seeds.');
+                        room.watered = true;
+                        can.full = false;
+                        can.description = 'an empty watering can';
+                    } else {
+                        say("You don't have a can.");
+                    }
+                }
+            }, {
+                phrase: 'wait',
+                action: (game, room) => {
+                    say('Time passes.');
+                    if (room.watered) {
+                        say('A carrot pops its head out of the soil.');
+                        room.addThing({
+                            description: 'a bright orange carrot',
+                            name: 'carrot'
+                        });
+                        room.watered = false;
+                        room.planted = false;
+                    }
+                }
+            }
+        ],
+        exits: {
+            nw: {room: 'Coat Room'},
+            s: {room: 'Stage Room'}
+        }
+    },{
+        name: 'Stage Room',
+        description: 'There are two big turbines in the room. One of them has writing on it.',
+        actions: [
+            {
+                phrase: 'read turbine',
+                action: (game, room) => {
+                    say('The turbine says "Magic generator."');
+                }
+            }, {
+                phrase: 'feed carrot to rabbit',
+                action: (game, room) => {
+                    if (game.self.has('carrot')) {
+                        say('The bunny gobbles up the carrot in one bite.');
+                        game.self.destroyThing('carrot');
+                        const rabbit = room.findThing('rabbit');
+                        rabbit.following = true;
+                        game.onMove((game, room) => {
+                            rabbit.room.removeThing('rabbit');
+                            rabbit.room = room;
+                            room.things.push(rabbit);
+                        });
+                    } else {
+                        say("You don't have a carrot.")
+                    }
+                }
+            }
+        ],
+        exits: {
+            n: {room: 'Garden'},
+            s: {room: 'Fancy Room'}
+        }
+    },{
+        name: 'Fancy Room',
+        description: 'A gold sliding door complete with ornate jewels blocks your path to the north. You notice that it is missing its largest central jewel.',
+        exits: {
+            //n: {room: 'Empty Room'},
+            s: {room: 'Stage Room'}
+        }
+    },{
+        name: 'Empty Room',
+        description: 'A staircase leads down into the mist.',
+        exits: {
+            d: {room: 'Ship Room'},
+            e: {room: 'Fancy Room'}
+        }
+    },{
+        name: 'Ship Room',
+        description: 'A ship is tied to a dock in the water. The knot that is holding it in place has become so old that it would be impossible to untie.',
+        exits: {
+            u: {room: 'Empty Room'}
+        }
+    },{
+        name: 'Faucet Room',
+        description: 'There is a sink with a leaky faucet here. To the south there is a small hole in the wall covered by a flap. It is too small for you to fit through.',
+        actions: [{
+            phrase: 'fill can',
+            action: (game, room) => {
+                if (game.self.has('can')) {
+                    const can = game.self.inventory['can'];
+                    if (!can.full) {
+                        say("You fill the can up from the faucet.");
+                        can.full = true;
+                        can.description = "a full watering can"
+                    } else {
+                        say("The can is already full.")
+                    }
+                } else {
+                    say("You don't have a can.")
+                }
+            }
+        }],
+        exits: {
+            n: {room: 'Shed'}
+        }
+    },{
+        name: 'Hornets Nest',
+        description: "The room is mostly empty.",
+        things: [{
+            description: 'a large jewel',
+            name: 'jewel'
+        }],
+        exits: {
+            se: {room: 'Shed'}
         }
     }]
 };

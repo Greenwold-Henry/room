@@ -18,10 +18,10 @@ module.exports = class Game {
         
         this.room = this.rooms[this.startingRoom];
         this.self = new Character(this.room);
+        this.onMoveCallbacks = [];
         
         this.validateDirections();
     }
-    
     
     // jshint ignore:start
     async start() {
@@ -39,6 +39,10 @@ module.exports = class Game {
     }
     // jshint ignore:end
     
+    onMove(action) {
+        this.onMoveCallbacks.push(action);
+    }
+
     validateDirections() {
         for (let room of Object.values(this.rooms)) {
             if (room.exits) {
@@ -63,6 +67,9 @@ module.exports = class Game {
             if (input === exit.dir || input === directions.fullname(exit.dir)) {
                 this.room = this.rooms[exit.room];
                 this.self.room = this.room;
+                for (let action of this.onMoveCallbacks) {
+                    action(this, this.room);
+                }
                 return;
             }
         }
@@ -91,6 +98,9 @@ module.exports = class Game {
         if (words[0] === 'take') {
             for (let thing of room.things) {
                 if (thing.name === words[1]) {
+                    if (!thing.gettable) {
+                        say(`You can't take the ${thing.name}.`);
+                    }
                     this.self.take(thing);
                     return;
                 }

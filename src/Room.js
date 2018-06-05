@@ -20,6 +20,18 @@ module.exports = class Room {
     addThing(thing) {
         this.things.push(new Thing({...thing, room: this}));
     }
+
+    removeThing(thingName) {
+        this.things = this.things.filter(thing => thing.name !== thingName);
+    }
+
+    findThing(thingName) {
+        for (let thing of this.things) {
+            if (thing.name === thingName) {
+                return thing;
+            }
+        }
+    }
     
     print() {
         console.log(chalk.green('\n' + this.name));
