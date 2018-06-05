@@ -35,4 +35,8 @@ module.exports = class Character {
         }
     }
 
+    has(thingName) {
+        return this.inventory[thingName] !== undefined;
+    }
+
 };

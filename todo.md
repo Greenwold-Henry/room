@@ -12,6 +12,7 @@
 * Dying
 * Capacity
 * Give a better message than "You can't go that way"
+* Add more verbs (get them out of Game)
 
 Done
 + Drop

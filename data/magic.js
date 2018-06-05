@@ -44,8 +44,43 @@ module.exports = {
             ]
         }],
         exits: {
-            n: { room: 'Small Room' },
-            //e: { room: 'Troll Room' }
+            w: { room: 'Coat Room' },
+            
+        }
+    },{
+        name: 'Coat Room',
+        description: ' This is a room where people put their clothes and belongings. A coat rack filled with many coats and other articles of clothing is in this room.',
+        actions: [
+            {
+                phrase: 'move coats',
+                action: (game, room) => {
+                    if (! room.Pushed) {
+                        room.Pushed = true;
+                        say('There is a magicians top hat.');
+                        room.addThing({
+                            description: 'magicians top hat',
+                            name: 'hat',
+                            actions: [
+                                {
+                                    phrase: 'put dust in hat',
+                                    action: (game, room) => {
+                                        if (game.self.has('bottle')) {
+                                            say('It creates a spark. Nothing else happens.');
+                                        }
+                                        else {
+                                            say("You don't have any dust.");
+                                        }
+                                    }
+                                }
+                            ]
+                        });
+                    }
+                }
+            }
+        ],
+        exits: {
+            //s: {room: 'Shed'},
+            e: {room: 'Small Room'}
         }
     }]
 };
