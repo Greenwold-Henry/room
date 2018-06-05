@@ -3,7 +3,7 @@ const directions = require('./lang/directions');
 const Thing = require('./Thing');
 
 module.exports = class Room {
-    constructor({name, description, exits = [], things = [], actions = []}) {
+    constructor({name, description, exits = [], things = [], actions = [], onEnter = []}) {
         this.name = name;
         this.description = description;
         this.exits = exits;
@@ -15,6 +15,10 @@ module.exports = class Room {
         for(let thing of things) {
             this.addThing(thing);
         }
+        if (!Array.isArray(onEnter)) {
+            onEnter = [onEnter];
+        }
+        this.onEnter = onEnter;
     }
 
     addThing(thing) {

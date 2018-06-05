@@ -5,14 +5,15 @@ module.exports = {
         rabbit: 'bunny',
         lock: 'box',
         clipping: ['news', 'newspaper', 'paper'],
-        seeds: ['packet', 'soil', 'bed'],
+        seeds: ['packet', 'soil', 'bed','carrot seeds'],
         hat: 'magicians',
         read: 'look',
         move: ['shove', 'push'],
         can: 'watering',
-        feed: ['give']
+        feed: ['give'],
+        insecticide: 'cannister',
+        nest: 'hornets'
     },
-
 
     name: "Escape from Mr. Mysterio's Magic House",
     startingRoom: 'Small Room',
@@ -112,8 +113,28 @@ module.exports = {
             description: 'a packet of carrot seeds',
             name: 'seeds'
         }],
+        actions: [
+            {
+                phrase: ['spray nest', 'spray insecticide', 'put insecticide nest'],
+                action: (game, room) => {
+                    if (game.self.has('insecticide')) {
+                        if (room.sprayed) {
+                            say('You already sprayed it.');
+                        } else {
+                            room.sprayed = true;
+                            say('The hornets buzzing around the nest drop out of the air.');
+                            room.description = "This room is full of gardening tools. There is a shriveled hornet's nest in the doorway to the northwest.";
+                            room.exits.nw.hidden = false;
+                            room.exits.nw.blocked = false;
+                        }
+                    } else {
+                        say("You don't have insecticide.");
+                    }
+                }
+            }
+        ],
         exits: {
-            nw: {room: 'Hornets Nest'},
+            nw: {room: 'Hornets Nest', hidden: true, blocked: true},
             n: {room: 'Coat Room'},
             s: {room: 'Faucet Room'}
         }
@@ -213,6 +234,10 @@ module.exports = {
     },{
         name: 'Fancy Room',
         description: 'A gold sliding door complete with ornate jewels blocks your path to the north. You notice that it is missing its largest central jewel.',
+        things: [{
+            description: 'a pair of scissors',
+            name: 'scissors'
+        }],
         exits: {
             //n: {room: 'Empty Room'},
             s: {room: 'Stage Room'}
@@ -250,6 +275,18 @@ module.exports = {
                 }
             }
         }],
+        onEnter: [
+            (game, room) => {
+                if (room.findThing('rabbit') && !room.gotInsecticide) {
+                    say('The bunny smells something interesting and runs through the flap. He returns with a cannister of insecticide');
+                    room.gotInsecticide = true;
+                    room.addThing({
+                        description: 'a cannister of insecticide',
+                        name: 'insecticide'
+                    });
+                }
+            }
+        ],
         exits: {
             n: {room: 'Shed'}
         }

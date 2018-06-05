@@ -7,6 +7,10 @@ const directions = require('./lang/directions');
 const junkWords = require('./lang/junkWords');
 const aliases = require('./lang/aliases');
 
+function toArray(input) {
+    return Array.isArray(input) ? input : [input];
+}
+
 module.exports = class Game {
     constructor(data) {
         this.rooms = {};
@@ -66,10 +70,7 @@ module.exports = class Game {
             return;
         }
         for (let root of Object.keys(data)) {
-            let aliases = data[root];
-            if (!Array.isArray(aliases)) {
-                aliases = [aliases];
-            }
+            let aliases = toArray(data[root]);
             for (let alias of aliases) {
                 this.aliases[alias] = root;
             }
@@ -101,27 +102,36 @@ module.exports = class Game {
             return;
         }
         for (let exit of exits) {
-            if (input === exit.dir || input === directions.fullname(exit.dir)) {
+            if (!exit.blocked && (input === exit.dir || input === directions.fullname(exit.dir))) {
                 this.room = this.rooms[exit.room];
                 this.self.room = this.room;
                 for (let action of this.onMoveCallbacks) {
+                    action(this, this.room);
+                }
+                for (let action of this.room.onEnter) {
                     action(this, this.room);
                 }
                 return;
             }
         }
         for (let action of (room.actions || [])) {
-            if (input === action.phrase) {
-                action.action(this, this.room);
-                return;
+            const phrases = toArray(action.phrase);
+            for (let phrase of phrases) {
+                if (input === phrase) {
+                    action.action(this, this.room);
+                    return;
+                }
             }
         }
         
         for (let thing of Object.values(this.self.inventory)) {
             for (let action of (thing.actions || [])) {
-                if (input === action.phrase) {
-                    action.action(this, this.room);
-                    return;
+                const phrases = toArray(action.phrase);
+                for (let phrase of phrases) {
+                    if (input === phrase) {
+                        action.action(this, this.room);
+                        return;
+                    }
                 }
             }
         }
