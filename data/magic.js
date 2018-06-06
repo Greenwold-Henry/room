@@ -194,12 +194,12 @@ module.exports = {
         }
     },{
         name: 'Stage Room',
-        description: 'There are two big turbines in the room. One of them has writing on it.',
+        description: 'There are two big columns in the room. One of them has writing on it.',
         actions: [
             {
-                phrase: 'read turbine',
+                phrase: 'read column',
                 action: (game, room) => {
-                    say('The turbine says "Magic generator."');
+                    say('The column says "Magic stage."');
                 }
             }, {
                 phrase: ['feed carrot to rabbit', 'feed rabbit the carrot'],
