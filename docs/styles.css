@@ -1,0 +1,17 @@
+html,
+body {
+  height: 100%;
+  font-family: 'Bitter', 'Georgia', 'Garamond', 'Times New Roman', 'Times', serif;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+}
+
+h2, h3 {
+    font-family: 'Bitter', 'Georgia', 'Garamond', 'Times New Roman', 'Times', serif;
+}
+
+.outputArea {
+  height:300px;
+  overflow-y: scroll
+}
