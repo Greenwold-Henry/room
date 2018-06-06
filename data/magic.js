@@ -76,22 +76,18 @@ module.exports = {
                             actions: [
                                 {
                                     phrase: 'put dust hat',
+                                    requiresThing: 'bottle',
                                     action: (game, room) => {
-                                        if (game.self.has('bottle')) {
-                                            if (room.name === 'Stage Room') {
-                                                say('Poof! A magical bunny rabbit hops out of the hat and refuses to move.');
-                                                room.addThing({
-                                                    description: 'a bunny rabbit',
-                                                    name: 'rabbit',
-                                                    gettable: false
-                                                });
-                                                game.self.destroyThing('bottle');
-                                            } else {
-                                                say('It creates a spark. Nothing else happens.');
-                                            }
-                                        }
-                                        else {
-                                            say("You don't have any dust.");
+                                        if (room.name === 'Stage Room') {
+                                            say('Poof! A magical bunny rabbit hops out of the hat and refuses to move.');
+                                            room.addThing({
+                                                description: 'a bunny rabbit',
+                                                name: 'rabbit',
+                                                gettable: false
+                                            });
+                                            game.self.destroyThing('bottle');
+                                        } else {
+                                            say('It creates a spark. Nothing else happens.');
                                         }
                                     }
                                 }
@@ -116,19 +112,16 @@ module.exports = {
         actions: [
             {
                 phrase: ['spray nest', 'spray insecticide', 'put insecticide nest'],
+                requiresThing: 'insecticide',
                 action: (game, room) => {
-                    if (game.self.has('insecticide')) {
-                        if (room.sprayed) {
-                            say('You already sprayed it.');
-                        } else {
-                            room.sprayed = true;
-                            say('The hornets buzzing around the nest drop out of the air.');
-                            room.description = "This room is full of gardening tools. There is a shriveled hornet's nest in the doorway to the northwest.";
-                            room.exits.nw.hidden = false;
-                            room.exits.nw.blocked = false;
-                        }
+                    if (room.sprayed) {
+                        say('You already sprayed it.');
                     } else {
-                        say("You don't have insecticide.");
+                        room.sprayed = true;
+                        say('The hornets buzzing around the nest drop out of the air.');
+                        room.description = "This room is full of gardening tools. There is a shriveled hornet's nest in the doorway to the northwest.";
+                        room.exits.nw.hidden = false;
+                        room.exits.nw.blocked = false;
                     }
                 }
             }
@@ -148,38 +141,32 @@ module.exports = {
         actions: [
             {
                 phrase: 'plant seeds',
+                requiresThing: 'seeds',
                 action: (game, room) => {
-                    if (game.self.has('seeds')) {
-                        if (!room.planted) {
-                            say('You plant the carrot seeds in rows in the soil bed.');
-                            room.planted = true;
-                            game.self.destroyThing('seeds');
-                        }
-                    } else {
-                        say("You don't have any seeds.");
+                    if (!room.planted) {
+                        say('You plant the carrot seeds in rows in the soil bed.');
+                        room.planted = true;
+                        game.self.destroyThing('seeds');
                     }
                 }
             },
             {
                 phrase: 'water seeds',
+                requiresThing: 'can',
                 action: (game, room) => {
-                    if (game.self.has('can')) {
-                        const can = game.self.inventory.can;
-                        if (!can.full) {
-                            say('The can is empty.');
-                            return;
-                        }
-                        if (!room.planted) {
-                            say('There are no seeds planted.');
-                            return;
-                        }
-                        say('You pour out the watering can onto the seeds.');
-                        room.watered = true;
-                        can.full = false;
-                        can.description = 'an empty watering can';
-                    } else {
-                        say("You don't have a can.");
+                    const can = game.self.inventory.can;
+                    if (!can.full) {
+                        say('The can is empty.');
+                        return;
                     }
+                    if (!room.planted) {
+                        say('There are no seeds planted.');
+                        return;
+                    }
+                    say('You pour out the watering can onto the seeds.');
+                    room.watered = true;
+                    can.full = false;
+                    can.description = 'an empty watering can';
                 }
             }, {
                 phrase: 'wait',
@@ -212,18 +199,15 @@ module.exports = {
                 }
             }, {
                 phrase: 'feed carrot rabbit',
+                requiresThing: 'carrot',
                 action: (game, room) => {
-                    if (game.self.has('carrot')) {
-                        say('The bunny gobbles up the carrot in one bite.');
-                        game.self.destroyThing('carrot');
-                        const rabbit = room.findThing('rabbit');
-                        rabbit.following = true;
-                        game.onMove((game, room) => {
-                            rabbit.move(room);
-                        });
-                    } else {
-                        say("You don't have a carrot.")
-                    }
+                    say('The bunny gobbles up the carrot in one bite.');
+                    game.self.destroyThing('carrot');
+                    const rabbit = room.findThing('rabbit');
+                    rabbit.following = true;
+                    game.onMove((game, room) => {
+                        rabbit.move(room);
+                    });
                 }
             }
         ],
@@ -260,18 +244,15 @@ module.exports = {
         description: 'There is a sink with a leaky faucet here. To the south there is a small hole in the wall covered by a flap. It is too small for you to fit through.',
         actions: [{
             phrase: 'fill can',
+            requiresThing: 'can',
             action: (game, room) => {
-                if (game.self.has('can')) {
-                    const can = game.self.inventory['can'];
-                    if (!can.full) {
-                        say("You fill the can up from the faucet.");
-                        can.full = true;
-                        can.description = "a full watering can"
-                    } else {
-                        say("The can is already full.")
-                    }
+                const can = game.self.inventory['can'];
+                if (!can.full) {
+                    say("You fill the can up from the faucet.");
+                    can.full = true;
+                    can.description = "a full watering can"
                 } else {
-                    say("You don't have a can.")
+                    say("The can is already full.")
                 }
             }
         }],

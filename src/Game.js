@@ -11,6 +11,52 @@ function toArray(input) {
     return Array.isArray(input) ? input : [input];
 }
 
+function tryAction() {
+
+}
+
+function removeJunk(input) {
+    const junkObj = {};
+    for (let word of junkWords) {
+        junkObj[word] = true;
+    }
+    return input.split(' ').filter(word => !junkObj[word]).join(' ');
+}
+
+function resolveAliases(input, aliases) {
+    return input.split(' ').map(word => aliases[word] || word).join(' ');
+}
+
+function preprocessString(input, aliases) {
+    input = input.toLowerCase().trim();
+    input = input.replace(/\W+/g, ' ');
+    input = removeJunk(input);
+    input = input.replace(/\W+/g, ' '); // In case new spaces are added
+    input = resolveAliases(input, aliases);
+    input = input.replace(/\W+/g, ' '); // In case new spaces are added
+    return input;
+}
+
+function tryAction(action, input, game, room) {
+    const phrases = toArray(action.phrase);
+    for (let phrase of phrases) {
+        if (input === preprocessString(phrase, game.aliases)) {
+            if (action.requiresThing) {
+                const things = toArray(action.requiresThing);
+                for (let thing of things) {
+                    if (!game.self.has(thing)) {
+                        say(`You don't have that.`);
+                        return true;
+                    }
+                }
+            }
+            action.action(game, room);
+            return true;
+        }
+    }
+    return false;
+}
+
 module.exports = class Game {
     constructor(data) {
         this.rooms = {};
@@ -76,26 +122,10 @@ module.exports = class Game {
             }
         }
     }
-    
-    removeJunk(input) {
-        const junkObj = {};
-        for (let word of junkWords) {
-            junkObj[word] = true;
-        }
-        return input.split(' ').filter(word => !junkObj[word]).join(' ');
-    }
-
-    resolveAliases(input) {
-        return input.split(' ').map(word => this.aliases[word] || word).join(' ');
-    }
-
 
     parseInput(input, room) {
-        input = input.toLowerCase().trim();
-        input = input.replace(/\W+/g, ' ');
-        input = this.removeJunk(input);
-        input = input.replace(/\W+/g, ' '); // In case new spaces are added
-        input = this.resolveAliases(input);
+        input = preprocessString(input, this.aliases);
+
         let exits = Object.values(room.exits);
         if (!exits || exits.length === 0) {
             say('You are trapped!');
@@ -115,24 +145,30 @@ module.exports = class Game {
             }
         }
         for (let action of (room.actions || [])) {
-            const phrases = toArray(action.phrase);
+            if (tryAction(action, input, this, room)) {
+                return;
+            }
+            /*const phrases = toArray(action.phrase);
             for (let phrase of phrases) {
                 if (input === phrase) {
                     action.action(this, this.room);
                     return;
                 }
-            }
+            }*/
         }
         
         for (let thing of Object.values(this.self.inventory)) {
             for (let action of (thing.actions || [])) {
-                const phrases = toArray(action.phrase);
+                if (tryAction(action, input, this, room)) {
+                    return;
+                }
+                /*const phrases = toArray(action.phrase);
                 for (let phrase of phrases) {
                     if (input === phrase) {
                         action.action(this, this.room);
                         return;
                     }
-                }
+                }*/
             }
         }
 
