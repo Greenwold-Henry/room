@@ -123,6 +123,11 @@ module.exports = class Game {
         }
     }
 
+    goToRoom(roomName) {
+        this.room = this.rooms[roomName];
+        this.self.room = this.room;
+    }
+
     parseInput(input, room) {
         input = preprocessString(input, this.aliases);
 
@@ -148,13 +153,6 @@ module.exports = class Game {
             if (tryAction(action, input, this, room)) {
                 return;
             }
-            /*const phrases = toArray(action.phrase);
-            for (let phrase of phrases) {
-                if (input === phrase) {
-                    action.action(this, this.room);
-                    return;
-                }
-            }*/
         }
         
         for (let thing of Object.values(this.self.inventory)) {
@@ -162,13 +160,6 @@ module.exports = class Game {
                 if (tryAction(action, input, this, room)) {
                     return;
                 }
-                /*const phrases = toArray(action.phrase);
-                for (let phrase of phrases) {
-                    if (input === phrase) {
-                        action.action(this, this.room);
-                        return;
-                    }
-                }*/
             }
         }
 

@@ -14,5 +14,10 @@
 * Give a better message than "You can't go that way"
 * Add more verbs (get them out of Game)
 
+* "Look at" should give you clues
+* Add two-word aliases:
+** pick up => take
+
+
 Done
 + Drop

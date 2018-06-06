@@ -3,16 +3,20 @@ const say = require('../src/util/say');
 module.exports = {
     aliases: {
         rabbit: 'bunny',
-        lock: 'box',
+        lock: ['box', 'code'],
         clipping: ['news', 'newspaper', 'paper'],
-        seeds: ['packet', 'soil', 'bed','carrot seeds'],
+        seeds: ['packet', 'soil', 'bed','carrot seeds', 'seed'],
         hat: 'magicians',
-        read: 'look',
+        read: ['look', 'inspect'],
         move: ['shove', 'push'],
         can: 'watering',
         feed: ['give'],
         insecticide: 'cannister',
-        nest: 'hornets'
+        nest: 'hornets',
+        set: 'enter',
+        put: ['sprinkle', 'place'],
+        coats: ['rack', 'clothes'],
+        rope: ['knot']
     },
 
     name: "Escape from Mr. Mysterio's Magic House",
@@ -23,7 +27,7 @@ module.exports = {
         description: 'Wow, this room is tiny. You can barely fit your legs in! There is a three-digit lock box fastened to the floor.',
         actions: [
             {
-                phrase: 'set lock 241',
+                phrase: ['set lock to 241', 'set lock box to 241', 'set lock code to 241', 'put 241 in lock', 'enter 241 in lock'],
                 action: (game, room) => {
                     if (! room.unlocked) {
                         room.unlocked = true;
@@ -69,9 +73,9 @@ module.exports = {
                 action: (game, room) => {
                     if (! room.Pushed) {
                         room.Pushed = true;
-                        say('There is a magicians top hat.');
+                        say("There is a magician's top hat.");
                         room.addThing({
-                            description: 'a magicians top hat',
+                            description: "a magician's top hat",
                             name: 'hat',
                             actions: [
                                 {
@@ -198,10 +202,10 @@ module.exports = {
                     say('The turbine says "Magic generator."');
                 }
             }, {
-                phrase: 'feed carrot rabbit',
+                phrase: ['feed carrot to rabbit', 'feed rabbit the carrot'],
                 requiresThing: 'carrot',
                 action: (game, room) => {
-                    say('The bunny gobbles up the carrot in one bite.');
+                    say('The bunny gobbles up the carrot in one bite. Now he will follow you anywhere!');
                     game.self.destroyThing('carrot');
                     const rabbit = room.findThing('rabbit');
                     rabbit.following = true;
@@ -213,7 +217,7 @@ module.exports = {
         ],
         exits: {
             n: {room: 'Garden'},
-            s: {room: 'Fancy Room'}
+            e: {room: 'Fancy Room'}
         }
     },{
         name: 'Fancy Room',
@@ -222,23 +226,49 @@ module.exports = {
             description: 'a pair of scissors',
             name: 'scissors'
         }],
+        actions: [{
+            phrase: 'put jewel in door',
+                requiresThing: 'jewel',
+                action: (game, room) => {
+                    say('The door slides to the right allowing access to a hidden room.');
+                    room.exits.n.hidden = false;
+                    room.exits.n.blocked = false;
+                    game.self.destroyThing('jewel');
+                    room.description = 'A gold sliding door complete with ornate jewels is open.';
+                }
+        }],
         exits: {
-            //n: {room: 'Empty Room'},
-            s: {room: 'Stage Room'}
+            n: {room: 'Empty Room', blocked: true, hidden: true},
+            w: {room: 'Stage Room'}
         }
     },{
         name: 'Empty Room',
         description: 'A staircase leads down into the mist.',
         exits: {
             d: {room: 'Ship Room'},
-            e: {room: 'Fancy Room'}
+            s: {room: 'Fancy Room'}
         }
     },{
         name: 'Ship Room',
         description: 'A ship is tied to a dock in the water. The knot that is holding it in place has become so old that it would be impossible to untie.',
         exits: {
-            u: {room: 'Empty Room'}
-        }
+            u: {room: 'Empty Room'},
+            n: {room: 'Sea', hidden: true, blocked: true}
+        },
+        actions: [{
+            phrase: ['cut rope', 'cut rope with scissors'],
+                requiresThing: 'scissors',
+                action: (game, room) => {
+                    say("The ship is released, and you and your bunny friend sail off into the mist. You escaped from Mister Mysterio's Magic House." );
+                    room.exits.n.hidden = false;
+                    room.exits.n.blocked = false;
+                    game.self.destroyThing('scissors');
+                    game.goToRoom('Sea');
+                }
+        }]
+    },{
+        name: 'Sea',
+        description: 'You and your bunny friend are free on the open sea. Look for sharks!'
     },{
         name: 'Faucet Room',
         description: 'There is a sink with a leaky faucet here. To the south there is a small hole in the wall covered by a flap. It is too small for you to fit through.',
