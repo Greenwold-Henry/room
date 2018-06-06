@@ -180,7 +180,7 @@ module.exports = class Game {
                     return;
                 }
             }
-            say(`You see no ${words[1]} here.`);
+            say(`You can't take that.`);
             return;
         }
         if (words[0] === 'drop') {
