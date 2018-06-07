@@ -15,17 +15,24 @@ function escapeHtml(unsafe) {
 
 if (inBrowser) {
     module.exports = (output, type) => {{
-        /* Typical Creation and Setup A New Orphaned Element Object */
-        var newElement = document.createElement('div');
-        newElement.innerHTML = escapeHtml(output);
-        if (type) {
-            newElement.classList.add(type);
-        }
+        for (let line of output.split('\n')) {
+            /* Typical Creation and Setup A New Orphaned Element Object */
+            const newElement = document.createElement('div');
+            newElement.innerHTML = escapeHtml(line);
+            if (type) {
+                newElement.classList.add(type);
+            }
 
-        /* Add NewElement */
-        const outputArea = document.getElementById("outputArea");
-        outputArea.appendChild(newElement);
-        outputArea.scrollTop = outputArea.scrollHeight;
+            /* Add NewElement */
+            const outputArea = document.getElementById("outputArea");
+
+            const spacer = document.createElement('div');
+            spacer.innerHTML = "&nbsp;";
+            outputArea.appendChild(spacer);
+
+            outputArea.appendChild(newElement);
+            outputArea.scrollTop = outputArea.scrollHeight;
+        }
     }};
 } else {
     module.exports = (output, type='plain') => {{

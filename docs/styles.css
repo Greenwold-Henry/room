@@ -16,3 +16,30 @@ h2, h3 {
   height:400px;
   overflow-y: scroll;
 }
+
+.say {
+  color: rgb(255, 238, 47);
+}
+
+.title {
+  color: rgb(255, 238, 47);
+  font-weight: bold;
+}
+
+.roomName {
+  color: rgb(103, 189, 27);
+}
+
+/*
+            case 'say':
+                console.log(chalk.yellow(output));
+                break;
+            case 'title':
+                console.log(chalk.yellowBright(output));
+                break;
+            case 'roomName':
+                    console.log(chalk.green(output));
+                    break;
+            case 'plain':
+
+*/
