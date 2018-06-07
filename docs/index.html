@@ -30,7 +30,7 @@
         </div>
     </div>
 </body>
-<!--script src="js/app.bundle.js"></script-->
+<script src="js/bundle.js"></script>
 <script>
     function escapeHtml(unsafe) {
         return unsafe
@@ -55,6 +55,7 @@
             outputArea.appendChild(newElement);
             outputArea.scrollTop = outputArea.scrollHeight;
 
+            window.onUserInput(userInput.value);
             userInput.value = "";
         }
     });

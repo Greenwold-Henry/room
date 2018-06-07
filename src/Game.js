@@ -1,7 +1,6 @@
 const chalk = require('chalk');
 const Room = require('./Room');
 const Character = require('./Character');
-const ask = require('./util/ask');
 const say = require('./util/say');
 const output = require('./util/output');
 const directions = require('./lang/directions');
@@ -79,21 +78,10 @@ module.exports = class Game {
         this.validateDirections();
     }
     
-    // jshint ignore:start
-    async start() {
+    start() {
         output(this.name, 'title');
         output(this.prologue);
-        await this._playLoop();
     }
-    
-    async _playLoop() {
-        while (true) {
-            this.room.print();
-            const input = await ask(chalk.blueBright('>> '));
-            this.parseInput(input, this.room);
-        }    
-    }
-    // jshint ignore:end
     
     onMove(action) {
         this.onMoveCallbacks.push(action);

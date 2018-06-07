@@ -18,9 +18,8 @@ if (inBrowser) {
         /* Typical Creation and Setup A New Orphaned Element Object */
         var newElement = document.createElement('div');
         newElement.innerHTML = escapeHtml(output);
-        NewElement.id = 'NewElement';
         if (type) {
-            element.classList.add(type);
+            newElement.classList.add(type);
         }
 
         /* Add NewElement */
