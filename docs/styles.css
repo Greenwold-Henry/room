@@ -5,6 +5,7 @@ body {
   padding: 0;
   margin: 0;
   overflow: auto;
+  background: #A0A0A0;
 }
 
 h2, h3 {
@@ -12,6 +13,6 @@ h2, h3 {
 }
 
 .outputArea {
-  height:300px;
-  overflow-y: scroll
+  height:400px;
+  overflow-y: scroll;
 }

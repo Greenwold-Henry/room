@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const directions = require('./lang/directions');
 const Thing = require('./Thing');
+const output = require('./util/output');
 
 module.exports = class Room {
     constructor({name, description, exits = [], things = [], actions = [], onEnter = []}) {
@@ -38,11 +39,12 @@ module.exports = class Room {
     }
     
     print() {
-        console.log(chalk.green('\n' + this.name));
-        console.log(this.description);
+        output('');
+        output(this.name, 'roomName');
+        output(this.description);
 
         for (let thing of this.things) {
-            console.log(`There is ${thing.description} here.`);
+            output(`There is ${thing.description} here.`);
         }
 
         if (this.exits) {
@@ -54,9 +56,9 @@ module.exports = class Room {
             }
             if (nonHiddenExits.length > 0) {
                 if (nonHiddenExits.length === 1) {
-                    console.log(`There is an exit ${directions.fullname(nonHiddenExits[0].dir)}`);
+                    output(`There is an exit ${directions.fullname(nonHiddenExits[0].dir)}`);
                 } else {
-                    console.log(`There are exits in the following directions: ${
+                    output(`There are exits in the following directions: ${
                                 nonHiddenExits.map((exit) => directions.fullname(exit.dir)).join(', ')
                             }`);
                 }

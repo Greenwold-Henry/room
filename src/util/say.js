@@ -1,5 +1,5 @@
-const chalk = require('chalk');
+const output = require('./output');
 
-module.exports = (output) => {{
-    console.log(chalk.yellow(output));
+module.exports = (outputStr) => {{
+    output(outputStr, 'say');
 }};

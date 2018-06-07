@@ -11,6 +11,7 @@
     "npm": "^5.6.0"
   },
   "devDependencies": {
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "webpack": "^4.11.1"
   }
 }

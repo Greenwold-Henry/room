@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <title>Room</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css?family=Bitter:regular,bold,italic" rel="stylesheet">
@@ -19,55 +21,42 @@
         <h1 class="ui dividing header"><br/>Room: An Interactive Fiction engine</h1>
 
         <h3 class="first">Game</h3>
-        <div class="ui outputArea segment">
-            <p>
-                Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.Try out the game. Try out the game. Try out the game. Try out the game. Try out the game. 
-                Try out the game. Try out the game. Try out the game.
-            </p>
-        </div>
+        <div id="outputArea" class="ui outputArea inverted segment"></div>
         <div class="ui fluid labeled input">
             <div class="ui label">
                 >>
             </div>
-            <input type="text" placeholder="What do you do...">
+            <input id="userInput" type="text" placeholder="What do you do...">
         </div>
     </div>
 </body>
 <!--script src="js/app.bundle.js"></script-->
+<script>
+    function escapeHtml(unsafe) {
+        return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+    }
 
+    const userInput = document.getElementById("userInput");
+    userInput.addEventListener("keyup", function(event) {
+        if (event.key === "Enter") {
+            /* Typical Creation and Setup A New Orphaned Element Object */
+            var newElement = document.createElement('div');
+            newElement.innerHTML = '>> ' + escapeHtml(userInput.value);
+            //NewElement.id = 'NewElement';
+
+
+            /* Add NewElement */
+            const outputArea = document.getElementById("outputArea");
+            outputArea.appendChild(newElement);
+            outputArea.scrollTop = outputArea.scrollHeight;
+
+            userInput.value = "";
+        }
+    });
+</script>
 </html>

@@ -3,6 +3,7 @@ const Room = require('./Room');
 const Character = require('./Character');
 const ask = require('./util/ask');
 const say = require('./util/say');
+const output = require('./util/output');
 const directions = require('./lang/directions');
 const junkWords = require('./lang/junkWords');
 const aliases = require('./lang/aliases');
@@ -80,8 +81,8 @@ module.exports = class Game {
     
     // jshint ignore:start
     async start() {
-        console.log(chalk.yellowBright(this.name));
-        console.log(this.prologue);
+        output(this.name, 'title');
+        output(this.prologue);
         await this._playLoop();
     }
     
