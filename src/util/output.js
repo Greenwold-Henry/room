@@ -21,14 +21,15 @@ if (inBrowser) {
             newElement.innerHTML = escapeHtml(line);
             if (type) {
                 newElement.classList.add(type);
+                newElement.classList.add("line");
             }
 
             /* Add NewElement */
             const outputArea = document.getElementById("outputArea");
 
-            const spacer = document.createElement('div');
-            spacer.innerHTML = "&nbsp;";
-            outputArea.appendChild(spacer);
+            //const spacer = document.createElement('div');
+            //spacer.innerHTML = "&nbsp;";
+            //outputArea.appendChild(spacer);
 
             outputArea.appendChild(newElement);
             outputArea.scrollTop = outputArea.scrollHeight;

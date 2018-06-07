@@ -30,16 +30,6 @@ h2, h3 {
   color: rgb(103, 189, 27);
 }
 
-/*
-            case 'say':
-                console.log(chalk.yellow(output));
-                break;
-            case 'title':
-                console.log(chalk.yellowBright(output));
-                break;
-            case 'roomName':
-                    console.log(chalk.green(output));
-                    break;
-            case 'plain':
-
-*/
+.line {
+  margin-bottom:5px;
+}
