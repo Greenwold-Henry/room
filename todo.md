@@ -13,6 +13,12 @@
 * Capacity
 * Give a better message than "You can't go that way"
 * Add more verbs (get them out of Game)
+* Short description of room after first time
+** Look gives you full description
+* Things in rooms that aren't listed or pickable up but can be looked at
+* Parser insensitive to word order
+* Testing!
+* Help
 
 * "Look at" should give you clues
 * Add two-word aliases:

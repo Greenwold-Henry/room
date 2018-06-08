@@ -3,7 +3,7 @@ const say = require('../src/util/say');
 module.exports = {
     aliases: {
         rabbit: 'bunny',
-        lock: ['box', 'code'],
+        lock: ['box', 'code', 'combination'],
         clipping: ['news', 'newspaper', 'paper'],
         seeds: ['packet', 'soil', 'bed','carrot seeds', 'seed'],
         hat: 'magicians',
@@ -13,9 +13,9 @@ module.exports = {
         feed: ['give'],
         insecticide: 'cannister',
         nest: 'hornets',
-        set: 'enter',
-        put: ['sprinkle', 'place'],
-        coats: ['rack', 'clothes'],
+        set: ['enter', 'type'],
+        put: ['sprinkle', 'place', 'spray'],
+        coats: ['rack', 'clothes', 'clothing'],
         rope: ['knot']
     },
 
@@ -115,7 +115,7 @@ module.exports = {
         }],
         actions: [
             {
-                phrase: ['spray nest', 'spray insecticide', 'put insecticide nest'],
+                phrase: ['spray nest', 'spray insecticide', 'put insecticide on nest', 'spray nest with insecticide'],
                 requiresThing: 'insecticide',
                 action: (game, room) => {
                     if (room.sprayed) {
