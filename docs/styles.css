@@ -30,6 +30,10 @@ h2, h3 {
   color: rgb(103, 189, 27);
 }
 
-.line {
-  margin-bottom:5px;
+/*.line {
+  margin-bottom: 1px;
+}*/
+
+.repeatInput {
+  color: rgb(114, 212, 254);
 }
