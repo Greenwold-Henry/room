@@ -19,6 +19,7 @@
 * Parser insensitive to word order
 * Testing!
 * Help
+* Exit should work with single exit, otherwise ask which direction
 
 * "Look at" should give you clues
 * Add two-word aliases:
